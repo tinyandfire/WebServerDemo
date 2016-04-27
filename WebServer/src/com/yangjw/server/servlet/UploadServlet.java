@@ -16,30 +16,44 @@ import org.apache.tomcat.util.http.fileupload.FileItemIterator;
 import org.apache.tomcat.util.http.fileupload.FileItemStream;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-
+/**
+ * @author yangjw
+ * 文件上传
+ * 此类主要给android开发人员做文件上传测试用。
+ * androidxx.cn
+ *
+ */
 public class UploadServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		super.doPost(req, resp);
+		req.setCharacterEncoding("UTF-8");
 		ServletFileUpload servletFileUpload = new ServletFileUpload();
 		try {
 			FileItemIterator fileItemIterator = servletFileUpload.getItemIterator(req);
 			while(fileItemIterator.hasNext()) {
 				FileItemStream fis = fileItemIterator.next();
 				if (fis.isFormField()) {
-					System.out.println(fis.getFieldName());
-					System.out.println(fis.getName());
-					System.out.println(fis.toString());
+					String fieldName = fis.getFieldName();
 					InputStream is = fis.openStream();
 					BufferedReader br = new BufferedReader(new InputStreamReader(is));
 					String str = null;
 					while((str=br.readLine()) != null) {
-						System.out.println(str);
+						System.out.println(fieldName +"="+ str);
 					}
+					is.close();
+					br.close();
 				} else {
+					System.out.println("---------------------------------");
+					String fileName = fis.getName();
 					InputStream is = fis.openStream();
-					FileOutputStream fos = new FileOutputStream(new File("E:\\360Downloads\\test.jpg"));
+					
+					File dir = new File("C:\\download\\");
+					if (!dir.exists()) {
+						dir.mkdir();
+					}
+					FileOutputStream fos = new FileOutputStream(new File("C:\\download\\"+fileName));
 					int len=0;
 					byte[] buffer = new byte[1024];
 					while((len=is.read(buffer)) != -1) {

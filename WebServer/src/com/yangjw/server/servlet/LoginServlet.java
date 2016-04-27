@@ -23,17 +23,17 @@ public class LoginServlet extends HttpServlet {
 		return;
 	}
 	/**
-	 * 后台服务器的Post方法
+	 * 
 	 * androidxx.cn
 	 * created by yangjw at 2016.4.24
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("=========androidxx.cn===========");
-		//-------------------后台接受Form表单数据的方式----------------------
+		
 		String userName = req.getParameter("username");
 		System.out.println("userName=" + userName);
-		//--------------------后台接收Json格式数据的方式---------------------
+		
 		InputStream is = req.getInputStream();
 		int len=0;
 		byte[] buffer = new byte[1024];
@@ -43,14 +43,11 @@ public class LoginServlet extends HttpServlet {
 		}
 		is.close();
 		System.out.println(new String(baos.toByteArray()));
-		//处理完成之后的挑传
+		
 		resp.getWriter().write("success");
-//		resp.sendRedirect("success.jsp");
+
 		return;
 	}
 	
-//	private void multiPart(HttpServletRequest req) {
-//		 ms = 
-//	}
 	
 }
